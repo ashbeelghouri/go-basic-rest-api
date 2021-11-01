@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 // TYPES STRUCT
@@ -36,9 +38,10 @@ func homepage(w http.ResponseWriter, r *http.Request){
 }
 
 func handleRequests(){
-	http.HandleFunc("/", homepage)
-	http.HandleFunc("/articles", allArticles)
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/", homepage)
+	router.HandleFunc("/articles", allArticles)
+	log.Fatal(http.ListenAndServe(":3000", router))
 }
 
 func main() {
